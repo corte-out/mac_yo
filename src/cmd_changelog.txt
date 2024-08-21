@@ -1,0 +1,192 @@
+VARP(showkpd, 0, 0, 1);
+VARP(showaccuracy, 0, 0, 1);
+VARP(showdamage, 0, 0, 2);
+VARP(showspecicons, 0, 1, 1);
+weaponstats;
+spec teleport;
+paused spec movement;
+sessionlen - displaying the sessionlength into console
+VARP(renameprotection, 0, 0, 1);
+screenshot output message;
+VARP(hideping, 0, 0, 1); // not anymore, might add back eventually
+ -> VARP(pingvalue, INT_MIN, 0, INT_MAX);
+VARP(showctfflagicons, 0, 1, 1);
+add fragmessages
+->  VARP(fragmsg, 0, 0, 2);
+    VARP(fragmsgmax, 1, 3, 10);
+    VARP(fragmsgmillis, 0, 3000, 10000);
+    VARP(fragmsgfade, 0, 1, 1);
+    FVARP(fragmsgx, 0, 0.5f, 1.0f);
+    FVARP(fragmsgy, 0, 0.15f, 1.0f);
+    FVARP(fragmsgscale, 0, 0.5f, 1.0f);
+    VARP(advancedfragmsgcoloring, 0, 0, 1); // switch between no coloring and yes coloring (ctf will have teamcolor regardless)
+VARP(showteamsize, 0, 1, 1); // maybe for all vs all's?
+VARP(savestats, 0, 1, 1);
+->  ICOMMAND(localstats, "", (), printlocalstats());
+    ICOMMAND(resetlocalstats, "", (), resetlocalstats());
+    VARP(totalplaytime, 0, 0, INT_MAX);
+    VARP(totalspectime, 0, 0, INT_MAX);
+    //VARP(totaldemotime, 0, 0, INT_MAX); // maybe for modes etc
+    VARP(totalfrags, INT_MIN, 0, INT_MAX);
+    VARP(totaldeaths, INT_MIN, 0, INT_MAX);
+    VARP(totalflags, 0, 0, INT_MAX);
+timestamp on log.txt creating an unique file for each session
+VARP(showflags, 0, 1, 1); // showing flag count, if the respective player has any, next to the fragcount (frags/flags)
+filterserver - way to search for servers (mode, map or description)
+VAR(hidehud, 0, 0, 2); // draw crosshair but disable hud -> 1 = disable hud, 2 = disable hud but show crosshair
+VARP(setplayermodel, -1, -1, 4); // force different playermodels - -1 is default
+ICOMMAND(stats, "i", (int *cn) ... ); // show stats of a player1 (differs between insta and no insta mode)
+    /stats - player1 stats
+    /stats -1 all players stats
+    /stats <cn> - cn's stats
+VARP(flagmillis, 0, 0, 1);
+    VARP(flagmillisx, 0, 0, 4500);
+    VARP(flagmillisy, 0, 0, 2500);
+    FVARP(flagmillissize, 0.1f, 0.5f, 10);
+    // kind of not that nice, if flag not taken no sign, size also influences the x and y coordinates (which makes sense but duh)
+    // flagsize is now scaled and translated - should be better?
+    // flagtimer should be 0:000 if flag not taken TODO
+    // flagtimer initial position is set to 0,0 ('top left corner') and only shows once flag is taken
+// various, neat, displayhud additions - gamehud = [] script should be obsolete now, but still usable
+VARP(hudstats, 0, 1, 1);            // will disable/enable weaponstats in general
+VARP(playercounter, 0, 1, 1);       // displays playercounter  -> if teammode 'good' and 'evil' (flagtaken also displayed) -> else just a 'alive' counter
+VARP(sessionlendisplay, 0, 1, 1);   // displays sessionlen in hud
+VARP(showweaponstats, 0, 1, 1);     // user should be able to disable advanced weaponstats - will, unlike 'hudstats', still render the general stats if turned off
+    // general comment about this:
+    // first 'real addition' to this client - needs to get tested, especially the hud allignment, since I was really bad in that department
+    // probably massively broken/bad/buggy in a way that is not tested by me, but it works for me so!
+    // stats uses p1xbraten weaponstats so demo will work TODO
+    // TODO: improve this all oh god please
+    //     -> review allignment
+    //     -> review colors
+    //     -> rewrite everything..
+VARFP(bratanmenu, 0, 0, 1, {}); // hardcoded menu - currently only for filterserver
+added MOD config - separate vanilla and mod VARs and write them into config.cfg or mod.cfg respectively, so the stuff from the modconfig line won't end up in config.cfg
+    -> bratanmenu fix needed: either hardcode vanilla or make it a normal var or leave it as it is (cuz essentially im the only one using bot warm up)
+// added custom weapon trails - cur values are vanilla
+    MODHVARP(trailcolorgl, 0, 0x404040, 0xFFFFFF);
+    MODHVARP(trailcolorrl, 0, 0x404040, 0xFFFFFF);
+    MODHVARP(trailcolorsg, 0, 0xFFC864, 0xFFFFFF);
+    MODHVARP(trailcolorcg, 0, 0xFFC864, 0xFFFFFF);
+    MODHVARP(trailcolorri, 0, 0x404040, 0xFFFFFF);
+    MODHVARP(trailcolorpi, 0, 0xFFC864, 0xFFFFFF);
+    ICOMMAND(resettrailcolors, "", (), {}); // will also print old values
+// custom crosshaircolor
+    MODHVARP(crosshaircolor, 0, 0xFFFFFF, 0xFFFFFF);
+// work still being done, 17.01.2024, hrhr
+// added history command to save and access console input history
+    MODVARP(savehistory, 0, 0, 1); // gets saved if 1
+    void loadhistory();
+    void savehistory();
+// added chat only log, as always this feature needs to be activated first - poss todo: check in future for possible problems/exploits?
+    MODVARP(allowchatonlylog, 0, 0, 1);
+    MODVARP(allowchatonlylogdemo, 0, 0, 1); // untested but this should decide if chat only log gets saved in demo or not (altho player1 should have a specific mark in demos) - demo chat gets marked as demochat
+primitive consearch - /consearch <string> - will search for <string> in console history and skip to first match // eeeh
+various scoreboard changes
+    MODVARP(showplayericon, 0, 1, 1);
+    MODVARP(alternativescoreboard, 0, 0, 1); // no teambackground + scoreboardtextcolor will be set to grey
+    MODHVARP(scoreboardtextcolor, 0, 0xA0A0A0, 0xFFFFFF);
+    MODVARP(showpjcolor, 0, 1, 1); // can be turned off
+    MODVARP(spacevarp, 1, 1, 10); // set the space between the columns (when noseperator is activated)
+    MODVARP(noseperator, 0, 0, 1); // delete all seperator lines - 'cleaner' scoreboard
+    add usep1xbratenscoreboard command
+    resetscoreboardcolours for alternativescoreboard 
+highlightscore 2 - player1 name gets color instead of background -- maybe switch with hudplayer()?
+showclientnum 2 option (todo: make it 3 so it displays names on the console too...) - also, specshow relatively untested
+showbotskill option, shows botlevel instead of cn in their magenta bracket
+MODVARP(frequencymultiplier, 0, 4, 10); // :sparkles: colors :sparkles: 
+MODVARP(eventmsg, 0, 1, 1); // currently: only hb and quad msg - todo: all flag msg (code is there) & msgfilter // also, currently it shows no icon for hb despite working?
+// kind of my most useless addition so far but uhhh...
+    MODVARP(rifletraillightning, 0, 0, 1);  // rifle with lightning trail (can also be colored)
+// yet another useless add -- adds a versioninit info! (fully customazible)
+    MODVARP(saveconsolehistory, 0, 0, 1);
+    MODVARP(allowversionmsg, 0, 1, 1);
+    MODVARP(allowversionmsgcolor, 0, 1, 1);
+    MODSVARP(selfservicemsg, "flowerbraten");
+mocksay command, not proud
+VARP(contextfade, 0, 0, 1); //smooth fading of consoletext
+VARP(saveduelstats, 0, 1, 1); // simple duel stats // maybe cw soon too + duels get extra sshot dir
+    ICOMMAND(duelstats, "", (), displayDuelStats());
+    MODVARP(lostduel, 0, 0, INT_MAX);
+    MODVARP(wonduel, 0, 0, INT_MAX);
+    MODVARP(drawduel, 0, 0, INT_MAX);
+MODVARP(clientnum2color, 0, 4, 9); // color for showclientnum 2 - default is 4 (grey)
+// playerdisplay for spec(!) only
+    // might need to delete this eventually, if i ever plan on publish this kind due to abuse reasons
+    MODVARP(showplayerstats, 0, 1, 1);
+    MODVARP(displayarmourstatus, 0, 0, 1); // 1 -> added to the health bar, 2 -> under the health bar (todo)
+    // x and y coordinates, manually put
+    MODVARP(playerx, 0, 37, 10000); // need to manually put this, ideally though automatically on the same spot for every player
+    MODVARP(playery, 0, 0, 10000);  // this too
+    MODVARP(displaynumberstats, 0, 0, 1); // ugly way of switching between numberdisplay and bar display
+MODVARP(crosshairbump, 0, 1, 1);
+MODVARP(bumpsize, 0, 20, 50);
+// autofollow credit to https://github.com/extra-a/sauer-sdl2
+// what exactly is autofollow? - it's a feature that allows you to follow a player without having to manually switch to them
+    MODVARP(disableautofollow, 0, 0, 1);
+    MODVARP(autofollowflagcarrier, 0, 0, 1);
+    MODVARP(autofollowchangewhenkilled, 0, 0, 2);
+    MODVARP(autofollowonlysameteam, 0, 0, 1);
+    MODVARP(autofollowdelay, 0, 100, 200);
+// clientsided demos, lets see how this will work out - credit to frosty
+    MODVARP(recordclientdemo, 0, 0, 1);
+    ICOMMAND(startclientdemo, "", (), setupdemorecord());
+    ICOMMAND(stopclientdemo, "", (), enddemorecord());
+MODVARP(enablerec, 0, 1, 1); // record indicator - fades in and out
+add flagrun measure included into scored-message
+// traverse demos!!! - credits: happyclient by origin
+// bugged - overtime doesnt work
+    MODVARP(allowdemofollow, 0, 1, 1); // needs to be activated to allow following the same player
+    // -> however this is bugged too! - need to fix damagescreenmillis 
+    // -> best way to 'fix' this is temporary disable the damagescreen
+    bind 8  damagescreen 0; onrelease [ damagescreen 1]
+    ICOMMAND - demotime mm ss
+    ICOMMAND - demoskip // untested, use seekdemo instead
+MODVARP(coloredtrails, 0, 1, 1); // colored trails for all weapons :sparkles:
+MODVARP(disablesky, 0, 0, 1);
+// credits to redon for this awesome addition
+    MODVARP(hudscorelabels, 0, 1, 1);
+    MODFVARP(hudscorelabelscale, 1e-3f, 0.6f, 1e3f);
+    MODVARP(hudscorelabelsep, 0, 32, 1000);
+
+
+TODOS before first 'release':
+    ultimatly ask jed on how to add the client version to the server
+    add uhh installer
+
+TODO stuff that i would love to see but most likely wont:
+    fixed serverpreview
+    make fillICharArray45 and fillICharArray50 VARP dependant
+    ...
+
+
+
+TODO
+change colors for scoreboard
+make an extra column for flags - hideflags?
+birthday saver? (hash set test)
+add server preview - modifiy stuff there (extinfo)
+surely improve clientdemos in some way
+change playericon with flagtaken symbol in scoreboard
+should we still have hideping?
+
+
+
+
+improve fragmsg!!!! - reference p1xbraten etc - confilter like
+    add event message
+make timestamp on logfile src sided? ref:hsc
+update scoreboard - ping/modelicon/etc
+
+TODO kinda but already did
+update localstats - probably broken in some way but whateva
+    -> add more features
+addfriend (cn) based?
+    just marking other players like 'highlightscore' does?
+hudscore showing flag if flag is taken?
+improved fragmsg - add other events?
+clientsided name saver (for player1 only)
+TODO: format redo (colors), maybe rework on function aswell? (stats command) - -2 ignores spec stats?
+TODO: scoreboard should show specific icons (ogroonly, etc), meaning ignore all the rest
+TODO format hudstats better
+
