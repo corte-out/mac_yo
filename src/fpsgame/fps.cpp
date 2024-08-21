@@ -368,33 +368,32 @@ namespace game
 
     void write_menu_config()
     {
-        const char *menuConfig = R"delimiter(
-            newgui servers [
-                guistayopen [
-                    guiservers [
-                        guilist [
-                            guibutton "update from master server" "updatefrommaster"
-                            guibar
-                            guitext "search: " 0
-                            newfilterdesc = $filterservers
-                            guifield newfilterdesc 10 [filterservers $newfilterdesc]
-                            guibutton "" [filterservers ""] "exit"
-                            guispring
-                            guicheckbox "search LAN" searchlan
-                            guibar
-                            guicheckbox "auto-update" autoupdateservers
-                            guibar
-                            guicheckbox "auto-sort" autosortservers
-                            if (= $autosortservers 0) [
-                                guibar
-                                guibutton "sort" "sortservers"
-                            ]
-                        ]
-                        guibar
-                    ] 17
-                ]
-            ] "" [initservers]
-        )delimiter"; // yay, never used delimeter before
+        const char *menuConfig = "\
+            newgui servers [\
+                guistayopen [\
+                    guiservers [\
+                        guilist [\
+                            guibutton \"update from master server\" \"updatefrommaster\"\
+                            guibar\
+                            guitext \"search: \" 0\
+                            newfilterdesc = $filterservers\
+                            guifield newfilterdesc 10 [filterservers $newfilterdesc]\
+                            guibutton \"\" [filterservers \"\"] \"exit\"\
+                            guispring\
+                            guicheckbox \"search LAN\" searchlan\
+                            guibar\
+                            guicheckbox \"auto-update\" autoupdateservers\
+                            guibar\
+                            guicheckbox \"auto-sort\" autosortservers\
+                            if (= $autosortservers 0) [\
+                                guibar\
+                                guibutton \"sort\" \"sortservers\"\
+                            ]\
+                        ]\
+                        guibar\
+                    ] 17\
+                ]\
+            ] \"\" [initservers]";
 
         const char *filename = path(create_menu_file, true);
 

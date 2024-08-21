@@ -131,7 +131,8 @@ CLIENT_OBJS= \
 	fpsgame/scoreboard.o \
 	fpsgame/server.o \
 	fpsgame/waypoint.o \
-	fpsgame/weapon.o
+	fpsgame/weapon.o \
+	fpsgame/weaponstats.o
 
 CLIENT_PCH= shared/cube.h.gch engine/engine.h.gch fpsgame/game.h.gch
 
@@ -500,6 +501,10 @@ fpsgame/waypoint.o: fpsgame/ai.h
 fpsgame/weapon.o: fpsgame/game.h shared/cube.h shared/tools.h shared/geom.h
 fpsgame/weapon.o: shared/ents.h shared/command.h shared/glexts.h
 fpsgame/weapon.o: shared/glemu.h shared/iengine.h shared/igame.h fpsgame/ai.h
+fpsgame/weaponstats.o: fpsgame/game.h shared/cube.h shared/tools.h shared/geom.h
+fpsgame/weaponstats.o: shared/ents.h shared/command.h shared/glexts.h
+fpsgame/weaponstats.o: shared/glemu.h shared/iengine.h shared/igame.h fpsgame/ai.h
+fpsgame/weaponstats.o: fpsgame/weaponstats.h fpsgame/weaponstats_type.h
 
 shared/cube.h.gch: shared/tools.h shared/geom.h shared/ents.h
 shared/cube.h.gch: shared/command.h shared/glexts.h shared/glemu.h
